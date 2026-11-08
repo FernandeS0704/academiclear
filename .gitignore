@@ -1,0 +1,18 @@
+/vendor/
+/node_modules/
+
+# Credenciais e configuração local (NUNCA versionar)
+/app/config/config.local.php
+.env
+
+# Logs e temporários
+*.log
+/tmp/
+/cache/
+
+# IDE / SO
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db

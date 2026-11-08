@@ -1,0 +1,137 @@
+<?php
+?>
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <title>Gradly — Login</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --green:        #00a661;
+      --green-hover:  #008f52;
+      --green-light:  #e8f7f0;
+      --green-mid:    #b8e8d2;
+      --green-text:   #006b40;
+      --bg:           #f9fafb;
+      --surface:      #ffffff;
+      --surface2:     #f4f5f7;
+      --border:       #e8eaed;
+      --border-mid:   #d1d5db;
+      --text-1:       #1a1a2e;
+      --text-2:       #5f6b7a;
+      --text-3:       #9aa5b4;
+      --sidebar-w:    210px;
+      --topbar-h:     52px;
+      --r-sm:4px; --r-md:6px; --r-lg:8px; --r-xl:12px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      font-size:13.5px;
+      color:var(--text-1);
+      background:var(--bg);
+      margin:0;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* Topbar (minimal for login) */
+    .topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.25rem;z-index:200;}
+    .topbar-brand{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;color:var(--text-1);text-decoration:none;}
+    .topbar-brand svg{width:22px;height:22px}
+
+    /* Sidebar (kept present but compact on login) */
+    .sidebar{position:fixed;top:var(--topbar-h);left:0;width:var(--sidebar-w);height:calc(100vh - var(--topbar-h));background:var(--surface);border-right:1px solid var(--border);padding:.75rem 0;display:none;}
+    @media(min-width:992px){ .sidebar{display:block} }
+
+    /* Main layout */
+    /* Main layout - centralizado vertical e horizontalmente */
+    
+    /* Para esta página escondemos topbar/sidebar e centralizamos a única div */
+    .topbar, .sidebar { display: none; }
+
+    .main {
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .content{display:flex;width:100%;max-width:980px;gap:1.25rem;align-items:center;justify-content:center;}
+    .content-main{flex:1;background:transparent;display:flex;align-items:center;justify-content:center;padding:1.25rem;}
+
+    /* Login card */
+    .login-card{width:100%;max-width:520px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:0 6px 18px rgba(26,26,46,0.06);overflow:hidden;}
+    .login-card .card-header{background:transparent;border-bottom:1px solid var(--border);padding:1.1rem 1.25rem;}
+    .login-card .card-body{padding:1.25rem 1.5rem;}
+    .page-sub{font-size:15px;font-weight:600;color:var(--text-1);margin:0;}
+    .login-note{font-size:13px;color:var(--text-2);margin-top:6px;}
+
+    .form-label{font-size:13px;color:var(--text-2);font-weight:500;}
+    .form-control{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text-1);font-size:13.25px;}
+    .form-control:focus{outline:none;border-color:var(--border-mid);box-shadow:none;background:var(--surface)}
+
+    .muted-link{font-size:13px;color:var(--text-3)}
+    .login-actions{display:flex;flex-direction:column;gap:.75rem;margin-top:12px;}
+
+    .btn-primary{background:var(--green);color:#fff;border:1px solid var(--green);padding:10px 14px;border-radius:8px;font-weight:600;cursor:pointer;}
+    .btn-primary:hover{background:var(--green-hover);border-color:var(--green-hover);}
+
+    .small-center{display:flex;justify-content:center;align-items:center;gap:6px;font-size:13px;color:var(--text-2)}
+
+    /* Right panel kept for consistency (hidden on small screens) */
+    .right-panel{display:none}
+    @media(min-width:1200px){ .right-panel{display:block;width:252px;flex-shrink:0;} }
+
+    /* Status bar (footer) */
+    .status-bar{border-top:1px solid var(--border);padding:.6rem 1.75rem;font-size:12px;color:var(--text-3);background:var(--surface);display:flex;align-items:center;gap:6px;width:100%;max-width:980px;margin-top:18px;border-radius:0 0 var(--r-lg) var(--r-lg);}
+
+    /* Animations */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .fi{animation:fadeUp .35s ease both}
+    .fi-1{animation-delay:.04s}.fi-2{animation-delay:.1s}.fi-3{animation-delay:.17s}.fi-4{animation-delay:.24s}.fi-5{animation-delay:.3s}
+  </style>
+</head>
+<body>
+<!-- MAIN -->
+<main class="main">
+    <div class="login-card fi fi-3" role="region" aria-labelledby="loginTitle">
+        <div class="card-header">
+          <h2 id="loginTitle" class="page-sub">Entrar na sua conta</h2>
+          <div class="login-note">Acesse seu projeto e continue de onde parou.</div>
+        </div>
+
+        <div class="card-body">
+          <form id="loginForm" novalidate>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input id="email" name="email" type="email" class="form-control" required autocomplete="username" />
+            </div>
+
+            <div class="mb-3">
+              <label for="senha" class="form-label">Senha</label>
+              <input id="senha" name="senha" type="password" class="form-control" required autocomplete="current-password" />
+            </div>
+
+            <div class="login-actions">
+              <button type="button" id="logar" class="btn-primary">Entrar</button>
+              <div class="small-center">
+                <span class="muted-link">Novo por aqui?</span>
+                <a href="../views/tipo_usuario.php" class="muted-link" style="color:var(--green);font-weight:600;text-decoration:none">Cadastre-se</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+</main>
+
+<script type="module" src="../assets/service/controle/login.js"></script>
+</body>
+</html>
